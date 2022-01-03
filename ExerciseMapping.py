@@ -59,12 +59,12 @@ print('Avg. Total Time = ' + str(AvgTotal))
 # get a list of the unique neighborhood names. Uses the functionality from a set
 # that only adds to a set if the new value is not already there. Convert back to a
 # list to get in the form we want. 
-neighborhoods = set([sub['neighborhood'] for sub in cleaner_data])
+neighborhoods = set([row['neighborhood'] for row in cleaner_data])
 
 # Create a new dictionary with the data sorted by neighborhood
 neighborhoodData = {}
-for i, nbrhood in enumerate(neighborhoods):
-    nb =  list(filter(lambda x: True if x['neighborhood'] == nbrhood else False, cleaner_data))
+for nbrhood in neighborhoods:
+    nb =  list(filter(lambda row: row['neighborhood'] == nbrhood, cleaner_data))
     neighborhoodData[nbrhood] = nb
 
         
@@ -72,8 +72,8 @@ for i, nbrhood in enumerate(neighborhoods):
 # citywide averages
 AverageTimes = {}
 AverageTimes['Citywide'] = {'AvgDispatch': AvgDispatch, 'AvgTotalResponse': AvgTotalResponse, 'AvgTotal': AvgTotal}
-for i, nbfhood in enumerate(neighborhoods):
-    nbrdata = neighborhoodData.get(nbfhood)
+for nbrhood in neighborhoods:
+    nbrdata = neighborhoodData.get(nbrhood)
     totaldispatchtime = reduce(
         lambda x, y: x + y['dispatchtime'], nbrdata, 0)
     totaltotalresponsetime = reduce(
@@ -83,9 +83,9 @@ for i, nbfhood in enumerate(neighborhoods):
     AvgDispatch = totaldispatchtime/len(nbrdata)
     AvgTotalResponse = totaltotalresponsetime/len(nbrdata)
     AvgTotal = totaltotaltime/len(nbrdata)
-    AverageTimes[nbfhood] = {'AvgDispatch': AvgDispatch, 'AvgTotalResponse': AvgTotalResponse, 'AvgTotal': AvgTotal}
+    AverageTimes[nbrhood] = {'AvgDispatch': AvgDispatch,
+                             'AvgTotalResponse': AvgTotalResponse, 'AvgTotal': AvgTotal}
 
-#print(AverageTimes)
 
 ## Part 3: Write to a JSON file
 with open("AverageByNeighborhood.json", "w", newline='', encoding="utf-8-sig") as jsonfile:
