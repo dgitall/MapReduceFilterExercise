@@ -13,7 +13,7 @@ with open("911_Calls_for_Service_(Last_30_Days).csv","r",newline='',encoding="ut
 print(len(data))
 
 # Remove the rows with missing data in zip or neighborhood
-cleaner_data = filter(lambda x: False if (x['zip_code'] is '0') or (x['neighborhood'] is '') else True, data)
+cleaner_data = filter(lambda x: False if (x['zip_code'] == '0') or (x['neighborhood'] == '') else True, data)
 
 cleaner_data = list(cleaner_data)
 print(len(cleaner_data))
@@ -22,18 +22,18 @@ print(len(cleaner_data))
 # lambda functions and Reduce()
 # First, convert all of the string data we will work with to float and change the empty data to 0
 for i in range(0, len(cleaner_data)):
-    if (cleaner_data[i]['dispatchtime'] is ''):
+    if (cleaner_data[i]['dispatchtime'] == ''):
         cleaner_data[i]['dispatchtime'] = 0
     else:
         cleaner_data[i]['dispatchtime'] = float(cleaner_data[i]['dispatchtime'])
         
-    if (cleaner_data[i]['totalresponsetime'] is ''):
+    if (cleaner_data[i]['totalresponsetime'] == ''):
         cleaner_data[i]['totalresponsetime'] = 0
     else:
         cleaner_data[i]['totalresponsetime'] = float(
         cleaner_data[i]['totalresponsetime'])
         
-    if (cleaner_data[i]['totaltime'] is ''):
+    if (cleaner_data[i]['totaltime'] == ''):
         cleaner_data[i]['totaltime'] = 0
     else:
         cleaner_data[i]['totaltime'] = float(cleaner_data[i]['totaltime'])
@@ -59,7 +59,7 @@ print('Avg. Total Time = ' + str(AvgTotal))
 # get a list of the unique neighborhood names. Uses the functionality from a set
 # that only adds to a set if the new value is not already there. Convert back to a
 # list to get in the form we want. 
-neighborhoods = list(set([sub['neighborhood'] for sub in cleaner_data]))
+neighborhoods = set([sub['neighborhood'] for sub in cleaner_data])
 
 # Create a new dictionary with the data sorted by neighborhood
 neighborhoodData = {}
